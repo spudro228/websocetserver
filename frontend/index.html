@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<body>
+<!--<script src="node_modules/socket.io-client/dist/socket.io.dev.js"></script>-->
+<script>
+    let socket = new WebSocket("ws://127.0.0.1:5556");
+    socket.onopen = function() {
+        console.log('Соединение установлено')
+    };
+
+    socket.onclose = function(event) {
+        if (event.wasClean) {
+            console.log('Соединение закрыто чисто');
+        } else {
+            console.log('Обрыв соединения'); // например, "убит" процесс сервера
+        }
+        console.log('Код: ' + event.code + ' причина: ' + event.reason);
+        console.log(event);
+        socket.send(event.code)
+
+    };
+
+    socket.onmessage = function(event) {
+        console.log("Получены данные " + event.data);
+    };
+
+    socket.onerror = function(error) {
+        console.log("Ошибка ", error);
+    };
+</script>
+<!--<script src="/socket.io/socket.io.js"></script>-->
+
+</body>
+</html>
